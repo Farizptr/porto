@@ -65,13 +65,11 @@ body {
 .content-area {
   margin-left: 300px; /* Match the max-width of sidebar */
   max-width: 1200px;
-  padding: 2rem 4rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .content-area {
     margin-left: 0;
-    padding: 1rem;
   }
 
   .sidebar {

@@ -47,7 +47,7 @@ const Layout = () => {
       <motion.main
         id="main-content"
         tabIndex={-1}
-        className="content-area pt-20 md:px-20 text-primary-dark focus:outline-none"
+        className="content-area px-4 pb-8 pt-16 md:px-16 md:pt-8 text-primary-dark focus:outline-none"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
