@@ -36,13 +36,7 @@
         "noNoninteractiveElementToInteractiveRole": "off",
         "noNoninteractiveTabindex": "off",
         "noPositiveTabindex": "off",
-        "noRedundantAlt": "off",
-        "noRedundantRoles": "off",
-        "noSvgWithoutTitle": "off",
-        "useAltText": "off",
-        "useKeyWithClickEvents": "off",
-        "useKeyWithMouseEvents": "off",
-        "useButtonType": "off"
+        "noRedundantRoles": "off"
       }
     }
   },

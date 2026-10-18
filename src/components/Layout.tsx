@@ -1,43 +1,43 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Sidebar from './Sidebar';
 import MobileMenu from './MobileMenu';
-import { useEffect, useRef, useState } from 'react';
+import ContactCTA from './ContactCTA';
+import { useEffect, useState } from 'react';
 
 const Layout = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { pathname } = useLocation();
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: reset scroll on every route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
-    if (containerRef.current) {
-      console.log('Sidebar container styles:', {
-        width: window.getComputedStyle(containerRef.current).width,
-        display: window.getComputedStyle(containerRef.current).display,
-        position: window.getComputedStyle(containerRef.current).position,
-        dimensions: containerRef.current.getBoundingClientRect()
-      });
-    }
-
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       setIsScrolled(scrollTop > 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <div className="flex min-h-screen bg-background-dark">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-gray-800 focus:px-4 focus:py-2 focus:text-white">Skip to content</a>
+
       {/* Desktop Sidebar - hidden on mobile */}
-      <div ref={containerRef} className="hidden md:block">
+      <aside className="hidden md:block">
         <Sidebar />
-      </div>
+      </aside>
 
       {/* Mobile Header */}
       <header className={`fixed top-0 left-0 right-0 h-16 flex items-center justify-between px-4 z-30 md:hidden transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-gray-900 border-b border-gray-700 backdrop-blur-md' 
+        isScrolled
+          ? 'bg-gray-900 border-b border-gray-700 backdrop-blur-md'
           : 'bg-background-dark border-b border-gray-800'
       }`}>
         <MobileMenu />
@@ -45,13 +45,16 @@ const Layout = () => {
 
       {/* Main Content */}
       <motion.main
-        className="content-area pt-20 md:px-20 text-primary-dark"
+        id="main-content"
+        tabIndex={-1}
+        className="content-area pt-20 md:px-20 text-primary-dark focus:outline-none"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <div className="container mx-auto px-4 md:px-6">
           <Outlet />
+          {pathname !== '/resume' && <ContactCTA />}
         </div>
       </motion.main>
     </div>

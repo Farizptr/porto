@@ -24,19 +24,7 @@ const staggerContainer = {
 const ServicesCard = ({ title }: { title: string }) => {
   return (
     <motion.div
-      className="bg-gray-800 rounded-lg p-4 hover:shadow-md transition-shadow"
-      whileHover={{ y: -5 }}
-      variants={fadeInUp}
-    >
-      <h3 className="text-base text-primary-dark">{title}</h3>
-    </motion.div>
-  );
-};
-
-const ToolCard = ({ title }: { title: string }) => {
-  return (
-    <motion.div
-      className="bg-gray-800 rounded-lg p-4 hover:shadow-md transition-shadow"
+      className="border border-gray-800 bg-gray-800 rounded-lg p-4 hover:shadow-md transition-colors hover:border-teal-400/40"
       whileHover={{ y: -5 }}
       variants={fadeInUp}
     >
@@ -48,30 +36,76 @@ const ToolCard = ({ title }: { title: string }) => {
 const WorkExperienceItem = ({
   period,
   company,
+  location,
   jobTitle,
   bulletPoints
 }: {
   period: string;
   company: string;
+  location?: string;
   jobTitle: string;
   bulletPoints: string[];
 }) => {
   return (
     <motion.div
-      className="mb-12"
+      className="relative pl-8"
       variants={fadeInUp}
     >
-      <p className="text-gray-400 mb-1">{period}</p>
-      <h3 className="text-lg font-medium text-primary-dark">{company}</h3>
+      <span
+        aria-hidden="true"
+        className={`absolute -left-[7px] top-1.5 h-3 w-3 rounded-full border-2 border-teal-400 ${period.includes('Present') ? 'bg-teal-400' : 'bg-background-dark'}`}
+      />
+      <p className="mb-1 text-sm text-teal-300/80">{period}</p>
+      <h3 className="text-lg font-medium text-primary-dark">
+        {company}
+        {location && <span className="text-gray-400 font-normal"> · {location}</span>}
+      </h3>
       <p className="text-primary-dark mb-3">{jobTitle}</p>
-      <ul className="list-disc list-inside space-y-2 text-gray-300 ml-4">
-        {bulletPoints.map((point, index) => (
-          <li key={index} className="leading-relaxed">{point}</li>
+      <ul className="list-disc space-y-2 pl-5 text-gray-300 marker:text-gray-600">
+        {bulletPoints.map((point) => (
+          <li key={point} className="leading-relaxed">{point}</li>
         ))}
       </ul>
     </motion.div>
   );
 };
+
+const skillGroups = [
+  {
+    title: 'Programming Languages',
+    items: ['Go', 'Python', 'JavaScript', 'TypeScript', 'Java', 'SQL', 'PHP', 'Dart']
+  },
+  {
+    title: 'Frameworks & Libraries',
+    items: ['FastAPI', 'Flask', 'Node.js', 'Express', 'React', 'Next.js', 'Laravel', 'Flutter', 'React Native', 'Tailwind CSS', 'PyTorch', 'YOLOv8']
+  },
+  {
+    title: 'Data',
+    items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Firebase']
+  },
+  {
+    title: 'Infrastructure & Tools',
+    items: ['Docker', 'RabbitMQ', 'Nginx', 'APISIX', 'Linux', 'Git', 'SonarQube', 'GCP', 'AWS']
+  }
+];
+
+const certifications = [
+  {
+    name: 'AWS Skill Builder',
+    detail: 'Serverless CI/CD, DevOps, Containers',
+    date: 'Aug 2025'
+  },
+  {
+    name: 'Google Cloud Skills Boost',
+    detail: 'Cloud Fundamentals, Core Infrastructure',
+    date: 'Aug 2025'
+  },
+  {
+    name: 'Cisco CyberOps Associate',
+    detail: 'CyberOps Associate, Cybersecurity Essentials',
+    date: 'May 2024'
+  }
+];
 
 const About = () => {
   return (
@@ -99,7 +133,7 @@ const About = () => {
           className="text-gray-300 leading-relaxed mb-4"
           variants={fadeInUp}
         >
-          As a final-year Information Systems and Technology student at ITB with hands-on experience in software engineering, I possess strong analytical, problem-solving, and communication skills. Driven by a passion for technology, I have honed my expertise in software development through academic projects and professional experience. Currently, I am focused on advancing my career in the technology industry by leveraging my technical knowledge and contributing to impactful projects as a software engineer.
+          Software Engineer focused on backend development and system integration, with hands-on experience building Go and Python services, REST APIs, and high-volume messaging systems. I work with Docker, RabbitMQ, MongoDB, and PostgreSQL, and I am comfortable with production deployment, distributed-system troubleshooting, and performance optimization.
         </motion.p>
       </motion.div>
 
@@ -120,12 +154,12 @@ const About = () => {
           className="grid grid-cols-1 md:grid-cols-2 gap-4"
           variants={staggerContainer}
         >
-          <ServicesCard title="Full-stack Web Development" />
-          <ServicesCard title="Mobile App Development" />
-          <ServicesCard title="Backend Development" />
-          <ServicesCard title="Frontend Development" />
-          <ServicesCard title="Database Design & Management" />
+          <ServicesCard title="Backend Development & APIs" />
+          <ServicesCard title="System Integration" />
+          <ServicesCard title="Messaging & Distributed Systems" />
           <ServicesCard title="Cloud Infrastructure & DevOps" />
+          <ServicesCard title="Full-stack Web Development" />
+          <ServicesCard title="Database Design & Optimization" />
         </motion.div>
       </motion.div>
 
@@ -143,51 +177,65 @@ const About = () => {
           Work Experience
         </motion.h2>
 
-        <WorkExperienceItem
-          period="May 2025 - Present"
-          company="Sinergi Merah Putih"
-          jobTitle="Backend Engineer Intern"
-          bulletPoints={[
-            "Configured and optimized backend authentication using LDAP, streamlining access control for over 500 internal users and reducing login-related errors by 40%",
-            "Built a Role-Based Management (RBM) system leveraging Google Cloud and ProxySQL to enable dashboard broadcasting, improving data distribution efficiency by 60% across departments",
-            "Provided on-call production support, resolving critical bugs with an average response time under 10 minutes, leading to a 25% reduction in system downtime incidents"
-          ]}
-        />
+        <div className="relative ml-2 space-y-10 border-l border-gray-700">
+          <WorkExperienceItem
+            period="Dec 2025 - Present"
+            company="Jatis Mobile"
+            location="Jakarta"
+            jobTitle="Junior Software Engineer"
+            bulletPoints={[
+              "Developed and maintained backend services for high-volume messaging and enterprise platforms, covering message scheduling, file ingestion, message processing and delivery, API gateways, chatbots, and AI-powered HR services, supporting workloads of 100,000+ messages per batch",
+              "Improved benchmark messaging throughput from approximately 100 TPS to 1,100+ TPS through query batching, database indexing, MongoDB BulkWrite operations, and worker concurrency optimization",
+              "Integrated and troubleshot distributed backend services connected to internal core systems, messaging providers, and third-party APIs, resolving application, database, queue, and message-delivery issues through root-cause analysis",
+              "Managed deployments across local, staging, and production environments, including Linux VM access via SSH, repository updates, environment configuration, Docker Compose builds, log monitoring, backups, and production incident handling"
+            ]}
+          />
 
-        <WorkExperienceItem
-          period="Apr 2024 - Present"
-          company="Freelance"
-          jobTitle="Software Engineer"
-          bulletPoints={[
-            "Collaborated closely with clients to gather requirements and translate business needs into technical solutions, successfully delivering 3+ end-to-end projects tailored to client objectives",
-            "Worked in a cross-functional team alongside UI/UX designers and system analysts to align development with user experience and system architecture standards",
-            "Successfully delivered projects with 100% on-time completion rate, achieving a 90% client satisfaction score based on post-project feedback and reducing client revision requests by 40%"
-          ]}
-        />
+          <WorkExperienceItem
+            period="May 2025 - Oct 2025"
+            company="Sinergi Merah Putih"
+            location="Jakarta"
+            jobTitle="Backend Engineer Intern"
+            bulletPoints={[
+              "Developed a Flask backend for a Pepper Robot used in live stage performances, implementing movement-control APIs, face recognition, and Gemini AI via Vertex AI for interactive experiences",
+              "Monitored and maintained Google Cloud infrastructure through Cloud Console and SSH, troubleshooting CPU spikes, restarting services, and automating recovery of unsent data to maintain service availability",
+              "Rebuilt an internal administration dashboard in Go and integrated APISIX log monitoring, improving service observability and troubleshooting workflows"
+            ]}
+          />
 
-        <WorkExperienceItem
-          period="Oct 2024 - Jan 2025"
-          company="Damaresa Group"
-          jobTitle="Software Engineer Intern"
-          bulletPoints={[
-            "Developed a fully responsive website from scratch using Flutter, leveraging Firebase for real-time backend integration and data management to optimize user experience",
-            "Improved the responsiveness of the user interface by analyzing performance bottlenecks, resulting in a 30% faster load time across multiple device types",
-            "Designed and implemented adaptive layouts and scalable UI components, ensuring seamless compatibility with over 95% of screen resolutions, enhancing accessibility for a diverse user base",
-            "Collaborated with a cross-functional team of 4 members, including designers and project managers, to align the development process with business goals, successfully delivering the project within the allocated 3-month timeline"
-          ]}
-        />
+          <WorkExperienceItem
+            period="Sep 2024 - Feb 2025"
+            company="Damaresa Group"
+            location="Bandung"
+            jobTitle="Frontend Engineer Intern"
+            bulletPoints={[
+              "Developed responsive Flutter applications backed by Firebase, implementing reusable interfaces and real-time data synchronization across application features",
+              "Improved application load times by approximately 40% through performance profiling, bottleneck analysis, and caching optimization"
+            ]}
+          />
 
-        <WorkExperienceItem
-          period="Jun 2024 - Aug 2024"
-          company="Krakatau IT"
-          jobTitle="Software Engineer Intern"
-          bulletPoints={[
-            "Led the design and development of an enterprise-level procurement management system application, streamlining internal processes and improving efficiency for the organization",
-            "Engineered and deployed a robust user interface with React Native and a Python backend, achieving seamless integration and real-time data synchronization with Firebase",
-            "Drove efficiency improvements across the procurement lifecycle by automating workflows and processes, which contributed to a 20% improvement in operational productivity",
-            "Conducted comprehensive testing and debugging, reducing post-deployment bugs by 15% and ensuring a reliable and user-friendly application"
-          ]}
-        />
+          <WorkExperienceItem
+            period="Jun 2024 - Aug 2024"
+            company="Krakatau IT"
+            location="Cilegon"
+            jobTitle="Digital Transformation Intern"
+            bulletPoints={[
+              "Developed a mobile procurement system to digitize paper-based workflows, reducing processing time from approximately 1 day to under 3 hours",
+              "Built a Flask backend for procurement workflows, including automated PDF generation and document retrieval for reporting and operational processes"
+            ]}
+          />
+
+          <WorkExperienceItem
+            period="Apr 2024 - Present"
+            company="Freelance"
+            jobTitle="Software Engineer"
+            bulletPoints={[
+              "Gathered requirements with clients and translated business needs into technical solutions, delivering end-to-end web projects",
+              "Worked alongside UI/UX designers and system analysts to keep development aligned with user experience and system architecture standards",
+              "Delivered client projects on schedule and iterated on feedback after launch"
+            ]}
+          />
+        </div>
       </motion.div>
 
       <motion.div
@@ -203,60 +251,26 @@ const About = () => {
         >
           Technical Skills
         </motion.h2>
-        
-        <motion.div className="mb-8" variants={fadeInUp}>
-          <h3 className="text-lg font-medium text-primary-dark mb-4">Programming Languages</h3>
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-4"
-            variants={staggerContainer}
-          >
-            <ToolCard title="JavaScript" />
-            <ToolCard title="TypeScript" />
-            <ToolCard title="Python" />
-            <ToolCard title="Java" />
-            <ToolCard title="Go" />
-            <ToolCard title="PHP" />
-            <ToolCard title="C" />
-          </motion.div>
-        </motion.div>
 
-        <motion.div className="mb-8" variants={fadeInUp}>
-          <h3 className="text-lg font-medium text-primary-dark mb-4">Frameworks & Libraries</h3>
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-4"
-            variants={staggerContainer}
-          >
-            <ToolCard title="React" />
-            <ToolCard title="React Native" />
-            <ToolCard title="Next.js" />
-            <ToolCard title="Flutter" />
-            <ToolCard title="Node.js" />
-            <ToolCard title="Laravel" />
-            <ToolCard title="Flask" />
-            <ToolCard title="FastAPI" />
-            <ToolCard title="Tailwind CSS" />
-            <ToolCard title="PyTorch" />
+        {skillGroups.map(({ title, items }) => (
+          <motion.div key={title} className="mb-8" variants={fadeInUp}>
+            <h3 className="text-lg font-medium text-primary-dark mb-4">{title}</h3>
+            <div className="flex flex-wrap gap-2">
+              {items.map((name) => (
+                <span
+                  key={name}
+                  className="rounded-lg border border-gray-800 bg-gray-900/60 px-3 py-1.5 text-sm text-gray-200 transition-colors hover:border-teal-400/40"
+                >
+                  {name}
+                </span>
+              ))}
+            </div>
           </motion.div>
-        </motion.div>
-
-        <motion.div className="mb-8" variants={fadeInUp}>
-          <h3 className="text-lg font-medium text-primary-dark mb-4">Databases & Tools</h3>
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-4"
-            variants={staggerContainer}
-          >
-            <ToolCard title="MySQL" />
-            <ToolCard title="PostgreSQL" />
-            <ToolCard title="MongoDB" />
-            <ToolCard title="Firebase" />
-            <ToolCard title="Supabase" />
-            <ToolCard title="Git" />
-            <ToolCard title="Docker" />
-          </motion.div>
-        </motion.div>
+        ))}
       </motion.div>
 
       <motion.div
+        className="mb-16"
         initial="hidden"
         animate="visible"
         variants={staggerContainer}
@@ -272,12 +286,49 @@ const About = () => {
           className="mb-6"
           variants={fadeInUp}
         >
-          <p className="text-gray-400 mb-1">Aug 2021 - Aug 2025 (Expected)</p>
-          <h3 className="text-lg font-medium text-primary-dark">Information Systems and Technology</h3>
+          <p className="text-gray-400 mb-1">Aug 2021 - Aug 2025</p>
+          <h3 className="text-lg font-medium text-primary-dark">Bachelor of Science in Information Systems and Technology</h3>
           <p className="text-primary-dark mb-3">Institut Teknologi Bandung (ITB)</p>
-          <p className="text-gray-300 mb-2">Area of Interest: Software Engineer</p>
+          <p className="text-gray-300 mb-2">Area of Interest: Software Engineering</p>
           <p className="text-gray-300 text-sm">Related Coursework: Algorithm and Data Structures, Object Oriented Programming, Software Engineering, Database Management, Mobile Development</p>
         </motion.div>
+      </motion.div>
+
+      <motion.div
+        className="mb-16"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        <motion.h2
+          className="text-2xl font-semibold mb-6 text-primary-dark"
+          variants={fadeInUp}
+        >
+          Certifications & Training
+        </motion.h2>
+        <ul className="space-y-3">
+          {certifications.map((cert) => (
+            <li key={cert.name} className="flex flex-col sm:flex-row sm:justify-between gap-1">
+              <span className="text-primary-dark">{cert.name} <span className="text-gray-400">— {cert.detail}</span></span>
+              <span className="text-sm text-teal-300/80">{cert.date}</span>
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        <motion.h2
+          className="text-2xl font-semibold mb-6 text-primary-dark"
+          variants={fadeInUp}
+        >
+          Languages
+        </motion.h2>
+        <p className="text-gray-300">English — Professional proficiency</p>
+        <p className="text-gray-300">Bahasa Indonesia — Native</p>
       </motion.div>
     </div>
   );
